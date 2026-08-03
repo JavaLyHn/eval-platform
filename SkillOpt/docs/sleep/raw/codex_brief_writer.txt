@@ -1,0 +1,45 @@
+=== gbrain brief-writer CODEX, improved prompt, 2 nights, 3+3 tasks ===
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "codex",
+  "model": "(default)",
+  "n_seeds": 1,
+  "n_improved": 1,
+  "tokens_used": 9990,
+  "results": [
+    {
+      "seed": "brief-writer",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 2,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 0.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "Every brief must include a clearly labeled section exactly titled `Key Risks`.",
+            "Every brief must include a line beginning `Confidence:` followed by a concise confidence level or rationale."
+          ]
+        },
+        {
+          "night": 2,
+          "held_out_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "- Preserve required sections even when keeping the brief short; shorten the analysis before omitting `## Key Risks` or `Confidence:`."
+          ]
+        }
+      ],
+      "final_skill_tail": "tside this block are never touched._\n\n- Every brief must include a clearly labeled section exactly titled `Key Risks`.\n- Every brief must include a line beginning `Confidence:` followed by a concise confidence level or rationale.\n- Preserve required sections even when keeping the brief short; shorten the analysis before omitting `## Key Risks` or `Confidence:`.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    }
+  ]
+}

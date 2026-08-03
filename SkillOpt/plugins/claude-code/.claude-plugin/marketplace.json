@@ -1,0 +1,26 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "skillopt-sleep",
+  "description": "SkillOpt-Sleep: give your local Claude agent a nightly sleep cycle that reviews past sessions and consolidates validated memory + skills.",
+  "owner": {
+    "name": "Yifan Yang",
+    "email": "yifanyang@microsoft.com"
+  },
+  "plugins": [
+    {
+      "name": "skillopt-sleep",
+      "description": "Nightly offline self-evolution: harvest your past Claude Code sessions, replay recurring tasks on your own API budget, and consolidate what the agent learns into validated CLAUDE.md memory and SKILL.md skills, behind a held-out gate, staged for your review. Synthesizes SkillOpt (validation-gated skill optimization), Claude Dreams (offline memory consolidation), and agent sleep/consolidation.",
+      "author": {
+        "name": "Yifan Yang"
+      },
+      "category": "productivity",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/microsoft/SkillOpt.git",
+        "path": "plugins/claude-code",
+        "ref": "main"
+      },
+      "homepage": "https://github.com/microsoft/SkillOpt"
+    }
+  ]
+}

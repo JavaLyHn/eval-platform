@@ -1,0 +1,79 @@
+# eval-platform 部署:db(Postgres)+ server(FastAPI)。前端静态文件与 HTTPS 由宿主机 nginx 托管。
+#
+# 用法(目标服务器):
+#   1) cp .env.docker.example .env   然后填好 PLATFORM_* 等
+#   2) docker compose up -d --build          # 起 db + server,server 监听 127.0.0.1:18791
+#   3) 前端:npm run build → 把 dist/ 放到宿主机 nginx 站点目录(见 README/部署说明)
+#   4) 宿主机 nginx:托管 dist + 反代 /v1 /admin /health 到 127.0.0.1:18791 + HTTPS
+#
+# ${...} 变量由同目录 .env 提供(compose 自动读取)。
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - qa_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  server:
+    # 上下文 = 仓库根(而非 ./server):镜像需同时纳入 server/ 与 SkillOpt/
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    # 把 .env 全部变量注入容器(含登录系统的 google_* / session_cookie_secure / gmail_* /
+    # app_base_url 等)。容器内没有 .env 文件,只靠下方 environment: 显式列举会漏掉 auth 变量
+    # → Google 登录(当前唯一建号通道)凭据全空,谁都登不进去。同名键以 environment: 为准
+    # (如 DATABASE_URL 仍由下方按服务名 db 构造并覆盖)。
+    env_file: .env
+    environment:
+      # asyncpg 连 compose 内的 db 服务(主机名 = 服务名 db,端口 5432)
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      SERVER_TOKEN: ${SERVER_TOKEN}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      PLATFORM_BASE_URL: ${PLATFORM_BASE_URL}
+      PLATFORM_API_KEY: ${PLATFORM_API_KEY}
+      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
+      PLATFORM_REQUEST_TIMEOUT: ${PLATFORM_REQUEST_TIMEOUT}
+      # Gateway / OpenAI 兼容网关(接 Dex 等):不在此显式列举。
+      # 原因:${GATEWAY_BASE_URL:-} 在 .env 未设时会注入空串,反而**覆盖** config.py 里的
+      # 网关默认值 → base_url 变空 → 报「未配置」。改为完全交给上面的 env_file: .env
+      # (只注入 .env 里实际存在的键);.env 没设的键留给 config.py 默认(base 有网关默认、
+      # key 走前端 profile 请求体或 .env)。要设就往 .env 加 GATEWAY_API_KEY[/BASE_URL]。
+      # 工具内容可见性:默认 false(脱敏)。设 true 才把工具 I/O 截断脱密后落库并流向裁判 LLM。
+      CAPTURE_TOOL_IO: ${CAPTURE_TOOL_IO:-false}
+      # SkillOpt 引擎在镜像内 /app/SkillOpt;显式指定避免容器内根路径解析落到 /SkillOpt
+      SKILLOPT_DIR: /app/SkillOpt
+      SKILLOPT_REQUEST_TIMEOUT: ${SKILLOPT_REQUEST_TIMEOUT:-1800}
+      # agent-defs 源定义已固化进镜像(server/Dockerfile: COPY agent-defs /app/agent-defs),无需挂载。
+      SAGE_REPO_DIR: /app/agent-defs
+    volumes:
+      # SkillOpt 运行产物(outputs/run_*)跨重启留存,且不写进只读镜像层
+      - qa_skillopt_outputs:/app/SkillOpt/outputs
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      # /health 是静态 200(不查库、不鉴权),适合做就绪探针;web 据此等 server 真就绪
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:18791/health')\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    ports:
+      # 只对宿主机本机开放(不暴露公网);公网由宿主机 nginx 反代到这里,HTTPS 在宿主机处理。
+      # 宿主机 nginx 用 proxy_pass http://127.0.0.1:18791 访问后端。
+      - "127.0.0.1:18791:18791"
+    restart: unless-stopped
+
+volumes:
+  qa_pgdata:
+  qa_skillopt_outputs:

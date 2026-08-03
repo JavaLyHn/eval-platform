@@ -1,0 +1,15 @@
+# 后端镜像 build 上下文(./server)
+.venv
+__pycache__
+**/__pycache__
+.pytest_cache
+.python-version
+.gitignore
+
+# env:后端运行时从 compose 注入环境变量,不把 .env 烘焙进镜像
+.env
+.env.*
+
+# 测试 / 文档不进运行镜像
+tests
+*.md

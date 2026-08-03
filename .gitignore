@@ -1,0 +1,56 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.local
+.env.*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.log
+.vite
+*.tsbuildinfo
+
+# server/python backend
+server/.venv/
+server/__pycache__/
+server/**/__pycache__/
+server/.python-version
+server/.env
+
+# Internal docs / PDFs — not for public repo
+*.pdf
+Agent-Mastery-Guide/
+doc.md
+video.md
+bridge/skills.json
+
+# SkillOpt(基于 MIT 的 microsoft/SkillOpt + 本仓的 qaplatform 评测特化)已 vendoring 进本仓。
+# 其 .venv / outputs / 日志由 SkillOpt/.gitignore(及下方补充)忽略,只纳入源码(~5M)。
+/SkillOpt/.venv/
+/SkillOpt/outputs/
+/SkillOpt/*.log
+
+# AI 员工源定义(agent-defs)已固化进本仓(普通文件,COPY 进镜像);仅排除其 .git(若日后恢复 clone)
+agent-defs/.git/
+
+# 个人工作材料(口播/调研/出题/图片/PDF 等),不进公共仓
+资料/
+
+# 技术文档的大体积导出 / 个人稿(按需本地保留,不进仓)
+docs/技术文档.html
+docs/技术文档.md
+# docs/images 默认不进仓(内部素材);但「原理」按钮要用的说明图随仓走,
+# 否则别人 clone / CI build 会缺图。用 /* + 白名单放行这两张。
+docs/images/*
+!docs/images/skillopt-principle-1.png
+!docs/images/skillopt-principle-2.png
+
+
+# dev.sh 运行时产物(pid / log)
+.run/
+
+# 可视化 brainstorm mockup 产物
+.superpowers/

@@ -1,0 +1,43 @@
+_base_: ../_base_/default.yaml
+
+model:
+  reasoning_effort: ""   # 关闭 Claude 扩展思考(thinking);否则网关把 effort 翻成 thinking.budget,
+                         # 而 max_tokens < budget 会 400。空串 → set_reasoning_effort 落 None → 不发该参数。
+
+env:
+  name: qaplatform
+  mock: false
+  skill_init: skillopt/envs/qaplatform/skills/initial.md
+  split_mode: split_dir
+  split_dir: skillopt/envs/qaplatform/cases_m1
+  workers: 2
+  max_completion_tokens: 2048
+  exec_timeout: 120
+
+train:
+  num_epochs: 2          # ≥2 才会触发 epoch 边界的 slow-update / meta
+  batch_size: 8
+  accumulation: 1
+  seed: 42
+
+gradient:
+  minibatch_size: 4
+  merge_batch_size: 4
+  analyst_workers: 2     # 单 LLM 限流 → 并发调小
+  max_analyst_rounds: 2
+  failure_only: false
+
+optimizer:
+  learning_rate: 3
+  min_learning_rate: 1
+  lr_scheduler: cosine
+  skill_update_mode: patch
+  use_slow_update: true  # M1 开启(需 optimizer LLM)
+  slow_update_samples: 4
+  use_meta_skill: true   # M1 开启
+
+evaluation:
+  use_gate: true
+  eval_test: true        # 留出集前后对比(trainer 建目录 bug 已修)
+  test_env_num: 0        # 0 = 全量 test
+  test_passk: 3         # 留出集每题跑 K 次,严格 pass^k=保下限(K=1 即旧单次行为)

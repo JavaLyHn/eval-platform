@@ -1,0 +1,48 @@
+=== REAL cross-check B: Codex, gate=ON (default), rollouts_k=2, brief-writer ===
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "codex",
+  "model": "(default)",
+  "n_seeds": 1,
+  "n_improved": 1,
+  "tokens_used": 17251,
+  "results": [
+    {
+      "seed": "brief-writer",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 2,
+      "trace": [
+        {
+          "night": 0,
+          "test_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "val_hard": 0.667,
+          "test_hard": 0.333,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "Every brief must include a section/heading titled exactly 'Key Risks'.",
+            "Every brief must include a confidence line labeled exactly 'Confidence:' so the response matches /[Cc]onfidence\\s*[:=]/."
+          ]
+        },
+        {
+          "night": 2,
+          "val_hard": 1.0,
+          "test_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "OVERRIDE any brevity guidance: every brief must include a standalone Markdown heading line exactly '## Key Risks' to satisfy section_present=Key Risks, even when the brief is very short."
+          ]
+        }
+      ],
+      "slow_update": null,
+      "final_skill_tail": "clude a section/heading titled exactly 'Key Risks'.\n- Every brief must include a confidence line labeled exactly 'Confidence:' so the response matches /[Cc]onfidence\\s*[:=]/.\n- OVERRIDE any brevity guidance: every brief must include a standalone Markdown heading line exactly '## Key Risks' to satisfy section_present=Key Risks, even when the brief is very short.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    }
+  ]
+}

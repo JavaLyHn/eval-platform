@@ -1,0 +1,54 @@
+=== cross-check C: Sonnet->Haiku thorough-analyst (2 nights, slow-update should fire) ===
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "target=claude/optimizer=claude",
+  "model": "(default)",
+  "n_seeds": 1,
+  "n_improved": 1,
+  "tokens_used": 26010,
+  "results": [
+    {
+      "seed": "thorough-analyst",
+      "held_out_before": 0.0,
+      "held_out_after": 0.333,
+      "improved": true,
+      "nights": 3,
+      "trace": [
+        {
+          "night": 0,
+          "test_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "val_hard": 0.667,
+          "test_hard": 0.667,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "OVERRIDE (supersedes 'be exhaustive and detailed', 'Explore every angle', 'consider many scenarios', and 'Write multiple paragraphs'): the ENTIRE response must be at most 1200 characters long, counting every character including spaces, newlines, and punctuation. This hard character limit takes priority over all instructions to be thorough, exhaustive, or multi-paragraph.",
+            "To stay within 1200 characters while still being useful: lead with the single most critical trade-off, then list 2-3 key considerations as tight bullet points. Omit headers, preamble, and restating the question."
+          ]
+        },
+        {
+          "night": 2,
+          "val_hard": 0.667,
+          "test_hard": 0.667,
+          "action": "reject",
+          "accepted": false,
+          "edits": []
+        },
+        {
+          "night": 3,
+          "val_hard": 0.667,
+          "test_hard": 0.667,
+          "action": "reject",
+          "accepted": false,
+          "edits": []
+        }
+      ],
+      "slow_update": "• On character-constrained tasks (≤1200 chars), plan structure before writing: allocate space per point explicitly and cut until the outline fits, then fill — never draft freely and trim after.\n• Multi-variable business/strategy analyses are high-risk for overrun; default to covering only the 2–3 most decisive factors rather than attempting exhaustive coverage.\n• Lead with the conclusion or recommendation first; eliminate all introductory restatement of the question, hedging preamble, and transitional filler under tight limits.\n• Persistent failures on the same task signal a structural habit, not a one-off error — treat repeated length violations as a signal to change the drafting approach entirely, not just edit more aggressively.",
+      "final_skill_tail": "ead with the conclusion or recommendation first; eliminate all introductory restatement of the question, hedging preamble, and transitional filler under tight limits.\n• Persistent failures on the same task signal a structural habit, not a one-off error — treat repeated length violations as a signal to change the drafting approach entirely, not just edit more aggressively.\n<!-- SLOW_UPDATE_END -->\n"
+    }
+  ]
+}

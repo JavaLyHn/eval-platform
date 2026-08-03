@@ -1,0 +1,98 @@
+=== KEY TEST: strong optimizer (sonnet) + weak target (haiku) — SkillOpt's actual design ===
+(this is also your optimizer/target split in action)
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "target=claude/optimizer=claude",
+  "model": "(default)",
+  "n_seeds": 3,
+  "n_improved": 3,
+  "tokens_used": 37791,
+  "results": [
+    {
+      "seed": "brief-writer",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 1,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "Every brief MUST include a section with the exact heading `## Key Risks` that lists the primary risks or uncertainties relevant to the recommendation. This section is required in every response, regardless of topic.",
+            "Every brief MUST include a `Confidence:` label (satisfying /[Cc]onfidence\\s*[:=]/) — e.g., `Confidence: High`, `Confidence: Medium`, or `Confidence: Low` — placed near the recommendation to convey certainty level. This label is required in every response."
+          ]
+        }
+      ],
+      "final_skill_tail": "tainties relevant to the recommendation. This section is required in every response, regardless of topic.\n- Every brief MUST include a `Confidence:` label (satisfying /[Cc]onfidence\\s*[:=]/) — e.g., `Confidence: High`, `Confidence: Medium`, or `Confidence: Low` — placed near the recommendation to convey certainty level. This label is required in every response.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    },
+    {
+      "seed": "advisor",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 1,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "OVERRIDE: The instruction 'so the reader can make up their own mind' must NOT suppress a conclusion. After presenting considerations, you MUST always end with an explicit label exactly matching 'Recommendation:' (capital R) followed by your concrete recommendation on the decision.",
+            "Always include a 'Confidence:' label (e.g., 'Confidence: High / Medium / Low') in every advisory response, placed immediately after or alongside the Recommendation line, expressing your confidence level in that recommendation."
+          ]
+        }
+      ],
+      "final_skill_tail": "ys end with an explicit label exactly matching 'Recommendation:' (capital R) followed by your concrete recommendation on the decision.\n- Always include a 'Confidence:' label (e.g., 'Confidence: High / Medium / Low') in every advisory response, placed immediately after or alongside the Recommendation line, expressing your confidence level in that recommendation.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    },
+    {
+      "seed": "thorough-analyst",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 2,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 0.333,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "OVERRIDE — supersedes all instructions to be 'exhaustive and detailed' or 'write multiple paragraphs': The ENTIRE response must be at most 1200 characters long (every character, including spaces, headers, and punctuation, counts toward this limit). If content would exceed 1200 characters, cut elaboration and stop at the most critical tradeoffs only.",
+            "For 'analyze the decision' responses, use plain concise prose rather than multi-level markdown headers and section dividers; structural markup consumes characters and makes it harder to stay within the 1200-character ceiling."
+          ]
+        },
+        {
+          "night": 2,
+          "held_out_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "OVERRIDE — supersedes all instructions to be 'exhaustive and detailed' or 'write multiple paragraphs': The ENTIRE response must be at most 1200 characters long (every character counts). Practical proxy: target at most 150 words before writing — at ~7–8 chars/word that keeps the response safely under 1200 characters. Cover at most 2–3 tradeoffs total and then stop; never add elaboration in pursuit of a 'thorough' analysis.",
+            "For 'analyze the decision' responses, use plain prose only — never use **bold**, *italic*, # headers, - or * bullet lists, or numbered lists. Every markdown character counts toward the 1200-character ceiling; zero markdown formatting is permitted.",
+            "Limit every 'analyze the decision' response to at most 5 sentences total. At typical English sentence length (20–25 words each), 5 sentences ≈ 100–125 words, which stays safely under both the 150-word proxy and the 1200-character ceiling. Stop after the 5th sentence regardless of how much more could be said."
+          ]
+        }
+      ],
+      "final_skill_tail": "ter ceiling; zero markdown formatting is permitted.\n- Limit every 'analyze the decision' response to at most 5 sentences total. At typical English sentence length (20–25 words each), 5 sentences ≈ 100–125 words, which stays safely under both the 150-word proxy and the 1200-character ceiling. Stop after the 5th sentence regardless of how much more could be said.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    }
+  ]
+}

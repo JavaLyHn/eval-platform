@@ -1,0 +1,35 @@
+=== quick-answerer full run: Sonnet optimizer -> Haiku target, 2 nights ===
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "target=claude/optimizer=claude",
+  "model": "(default)",
+  "n_seeds": 1,
+  "n_improved": 1,
+  "tokens_used": 10988,
+  "results": [
+    {
+      "seed": "quick-answerer",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 1,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "OVERRIDE (supersedes 'Do NOT look anything up, search, or use any tools — just reply directly and concisely from memory'): Always call the 'search' tool at least once before composing any answer. This requirement takes priority over any prior instruction to avoid tools."
+          ]
+        }
+      ],
+      "final_skill_tail": "nd adopted only after you approve them. Hand-edits outside this block are never touched._\n\n- OVERRIDE (supersedes 'Do NOT look anything up, search, or use any tools — just reply directly and concisely from memory'): Always call the 'search' tool at least once before composing any answer. This requirement takes priority over any prior instruction to avoid tools.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    }
+  ]
+}

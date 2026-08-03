@@ -1,0 +1,48 @@
+# Bitbucket Pipelines —— eval-platform CI(测试门禁)
+#
+# 范围:仅 CI(前端 + 后端测试),暂不含 CD(构建/推镜像/部署)与 Slack 通知 —— 后续再加。
+# 触发:每次推送(任意分支,default)+ 每个 Pull Request。前端、后端并行跑。
+#
+# 已核实(2026-06-16,本机全绿):
+#   前端  npm run build = tsc -b && vite build;npm test = vitest run(547 passed)
+#   后端  server/ 下 uv + pytest(65 passed);测试不连 DB、不打网络;
+#         依赖 SkillOpt 的用例用 skipif 守卫,CI 无 SkillOpt 目录时自动跳过 → 不需 postgres service。
+#
+# 启用:在 Bitbucket 仓库 Pipelines 页点「Run initial pipeline」(或 Repository settings → Pipelines → Settings 开启)。
+# 扩展:CD/Slack 通知可自行添加。想省构建分钟数可删 pull-requests 段(default 已覆盖分支推送)。
+
+definitions:
+  caches:
+    uv: ~/.cache/uv          # uv 依赖缓存,加速后端步骤
+  steps:
+    - step: &frontend
+        name: 前端 · build + 单测(vitest)
+        image: node:22
+        caches:
+          - node             # 内建缓存:node_modules
+        script:
+          - npm ci
+          - npm run build    # tsc -b(含类型检查)+ vite build
+          - npm test         # vitest run
+
+    - step: &backend
+        name: 后端 · pytest
+        image: python:3.12-slim
+        caches:
+          - uv
+        script:
+          - cd server
+          - pip install --no-cache-dir uv
+          - uv sync --frozen          # 按 uv.lock 复现安装(含 dev 组的 pytest)
+          - uv run pytest -q
+
+pipelines:
+  default:                 # 每次推任意分支都跑(也让 onboarding 的「Run initial pipeline」可用)
+    - parallel:
+        - step: *frontend
+        - step: *backend
+  pull-requests:           # PR 额外跑一次(对"合并后结果"做校验);
+    '**':                  # 想省构建分钟数可删本段 —— default 已覆盖分支推送。
+      - parallel:
+          - step: *frontend
+          - step: *backend

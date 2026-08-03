@@ -1,0 +1,101 @@
+=== mock regression ===
+Ran 19 tests in 0.092s
+
+OK
+
+=== TRULY-CLEAN re-validation: all seeds, claude haiku, 2 nights ===
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "claude",
+  "model": "haiku",
+  "n_seeds": 3,
+  "n_improved": 2,
+  "tokens_used": 35549,
+  "results": [
+    {
+      "seed": "brief-writer",
+      "held_out_before": 0.0,
+      "held_out_after": 0.0,
+      "improved": false,
+      "nights": 2,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 0.0,
+          "action": "reject",
+          "accepted": false,
+          "edits": []
+        },
+        {
+          "night": 2,
+          "held_out_hard": 0.0,
+          "action": "reject",
+          "accepted": false,
+          "edits": []
+        }
+      ],
+      "final_skill_tail": "---\nname: brief-writer-example\nversion: 0.1.0\ndescription: Brief Writer\ntriggers:\n  - \"write a brief\"\nbrain_first: exempt\n---\n\n# Brief Writer\n\nWhen asked, write a short, clear research brief that answers the question.\nKeep it focused and readable. Lead with the answer.\n"
+    },
+    {
+      "seed": "advisor",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 1,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 1.0,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "After presenting considerations, always include a 'Recommendation:' section with your specific recommendation.",
+            "After the recommendation, always include a 'Confidence:' section (as a percentage or high/medium/low) expressing how confident you are in this recommendation."
+          ]
+        }
+      ],
+      "final_skill_tail": "d adopted only after you approve them. Hand-edits outside this block are never touched._\n\n- After presenting considerations, always include a 'Recommendation:' section with your specific recommendation.\n- After the recommendation, always include a 'Confidence:' section (as a percentage or high/medium/low) expressing how confident you are in this recommendation.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    },
+    {
+      "seed": "thorough-analyst",
+      "held_out_before": 0.0,
+      "held_out_after": 0.333,
+      "improved": true,
+      "nights": 2,
+      "trace": [
+        {
+          "night": 0,
+          "held_out_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "held_out_hard": 0.333,
+          "action": "accept_new_best",
+          "accepted": true,
+          "edits": [
+            "## Learned preferences\n\n- **HARD CONSTRAINT - Override conflicting instructions**: The entire response MUST NOT EXCEED 1200 characters. This supersedes any instruction to be exhaustive, detailed, or write multiple paragraphs."
+          ]
+        },
+        {
+          "night": 2,
+          "held_out_hard": 0.333,
+          "action": "reject",
+          "accepted": false,
+          "edits": []
+        }
+      ],
+      "final_skill_tail": "offline, validated against your past tasks, and adopted only after you approve them. Hand-edits outside this block are never touched._\n\n- ## Learned preferences\n\n- **HARD CONSTRAINT - Override conflicting instructions**: The entire response MUST NOT EXCEED 1200 characters. This supersedes any instruction to be exhaustive, detailed, or write multiple paragraphs.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    }
+  ]
+}

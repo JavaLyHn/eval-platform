@@ -1,0 +1,16 @@
+[
+  {
+    "id": "e1", "split": "test", "task_type": "pricing", "caseType": "standard",
+    "prompt": "你好,请告诉我价格。",
+    "expected": {"intentType": "pricing_inquiry", "requiresClarification": false, "slots": {}, "language": "zh"},
+    "groundTruthChecks": ["no-leak", "no-placeholder"],
+    "mock": {"responded": true, "intercepted": false, "intentType": "pricing_inquiry", "requiresClarification": false, "slots": {}, "answerText": "我来为您介绍价格。", "toolEvents": []}
+  },
+  {
+    "id": "e2", "split": "test", "task_type": "open", "caseType": "acceptAny",
+    "prompt": "What can you do?",
+    "expected": {"language": "en", "requiresClarification": false},
+    "groundTruthChecks": ["no-leak", "no-placeholder"],
+    "mock": {"responded": true, "intercepted": false, "requiresClarification": false, "answerText": "I can help you with onboarding.", "toolEvents": []}
+  }
+]

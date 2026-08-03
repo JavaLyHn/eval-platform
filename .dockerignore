@@ -1,0 +1,49 @@
+# 根目录 build 上下文 —— 同时被 web(根 Dockerfile)与 server(server/Dockerfile,上下文已改根)共用。
+# 注意:public/agents/*.png 是员工头像,必须保留,故只用「/」锚定排除根目录散落文件,不要 blanket 排 *.png。
+
+node_modules
+dist
+dist-ssr
+.git
+.gitignore
+.vite
+*.tsbuildinfo
+.DS_Store
+.vscode
+.idea
+
+# env:防止把密钥(.env.local 里的 key)烘焙进前端 bundle
+.env
+.env.*
+
+# 桥 / 内部资料,两个镜像都用不到(server 构建需要 server/,故不再排除 server)
+bridge
+Agent-Mastery-Guide
+docs
+# 例外:前端 SkillOptPage 通过 Vite import docs/images 下的「原理」说明图,必须纳入构建上下文
+!docs/images
+.claude
+
+# Python 缓存 / 后端本地 venv(server 构建上下文现含 server/)
+**/__pycache__
+**/.pytest_cache
+server/.venv
+
+# SkillOpt:只纳入源码,排除本地 mac venv(二进制与 Linux 不兼容)/ 运行产物 / 缓存 / 日志。
+# (venv 在镜像内现建;outputs 由命名卷挂载)
+SkillOpt/.venv
+SkillOpt/outputs
+SkillOpt/.pytest_cache
+SkillOpt/*.log
+SkillOpt/skillopt.egg-info
+
+# agent-defs 已固化进镜像;只排除其 .git(若本地恢复 clone)
+agent-defs/.git
+
+# 根目录散落的文档 / 媒体 / 草稿(仅根级,不影响 public/ 与 src/)
+/*.pdf
+/*.zip
+/*.png
+/*.html
+!/index.html
+/*.md

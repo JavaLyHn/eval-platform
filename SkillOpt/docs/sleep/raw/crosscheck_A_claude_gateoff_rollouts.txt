@@ -1,0 +1,38 @@
+=== REAL cross-check A: Sonnet->Haiku, gate=OFF, rollouts_k=2, brief-writer (exercises new paths) ===
+{
+  "benchmark": "gbrain-evals/skillopt-v1",
+  "backend": "target=claude/optimizer=claude",
+  "model": "(default)",
+  "n_seeds": 1,
+  "n_improved": 1,
+  "tokens_used": 11271,
+  "results": [
+    {
+      "seed": "brief-writer",
+      "held_out_before": 0.0,
+      "held_out_after": 1.0,
+      "improved": true,
+      "nights": 1,
+      "trace": [
+        {
+          "night": 0,
+          "test_hard": 0.0,
+          "action": "baseline"
+        },
+        {
+          "night": 1,
+          "val_hard": 1.0,
+          "test_hard": 1.0,
+          "action": "greedy_improved",
+          "accepted": true,
+          "edits": [
+            "Every brief MUST include a section with the exact heading '## Key Risks' that lists the primary risks relevant to the recommendation. This section is required in every output regardless of topic.",
+            "Every brief MUST include a 'Confidence:' label (satisfying /[Cc]onfidence\\s*[:=]/) that states the confidence level in the recommendation (e.g., 'Confidence: Medium'). Place it near the answer/recommendation line or at the end of the brief."
+          ]
+        }
+      ],
+      "slow_update": null,
+      "final_skill_tail": "at lists the primary risks relevant to the recommendation. This section is required in every output regardless of topic.\n- Every brief MUST include a 'Confidence:' label (satisfying /[Cc]onfidence\\s*[:=]/) that states the confidence level in the recommendation (e.g., 'Confidence: Medium'). Place it near the answer/recommendation line or at the end of the brief.\n<!-- SKILLOPT-SLEEP:LEARNED END -->\n"
+    }
+  ]
+}

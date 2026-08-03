@@ -1,0 +1,22 @@
+{
+  "name": "skillopt-sleep",
+  "description": "Give your local Claude agent a nightly 'sleep cycle': it reviews your past sessions offline, replays recurring tasks on your own API budget, and consolidates what it learns into validated memory (CLAUDE.md) and skills (SKILL.md) so it gets better the more you use it. Synthesizes SkillOpt (validation-gated skill optimization), Claude Dreams (offline memory consolidation), and agent sleep/consolidation.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Yifan Yang",
+    "email": "yifanyang@microsoft.com"
+  },
+  "homepage": "https://github.com/microsoft/SkillOpt",
+  "repository": "https://github.com/microsoft/SkillOpt",
+  "license": "MIT",
+  "keywords": [
+    "skillopt",
+    "self-improvement",
+    "memory-consolidation",
+    "dreams",
+    "sleep",
+    "skills",
+    "continual-learning",
+    "offline-optimization"
+  ]
+}

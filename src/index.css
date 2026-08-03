@@ -1,0 +1,334 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light theme — clean, Linear/Vercel-inspired */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --surface: 210 40% 98%;
+    --surface-foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 222 47% 11%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 38%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    /* 焦点环用品牌强调蓝(原来是近黑的 foreground,Radix 关闭浮层回焦时会画出刺眼黑框)。 */
+    --ring: 217 91% 60%;
+
+    --radius: 0.625rem;
+  }
+
+  .dark {
+    /* Dark theme — Anthropic Console / OLED inspired */
+    --background: 240 6% 6%;
+    --foreground: 0 0% 98%;
+
+    --surface: 240 5% 9%;
+    --surface-foreground: 0 0% 98%;
+
+    --card: 240 5% 9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 5% 9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 6% 10%;
+
+    --secondary: 240 4% 14%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 4% 14%;
+    --muted-foreground: 240 5% 65%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 73% 58%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 142 65% 48%;
+    --success-foreground: 0 0% 98%;
+
+    --warning: 38 95% 60%;
+    --warning-foreground: 240 6% 10%;
+
+    --info: 217 91% 65%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 240 4% 17%;
+    --input: 240 4% 17%;
+    --ring: 240 5% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1,
+      "cv11" 1,
+      "ss01" 1;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+    border: 2px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+@layer components {
+  /* Status dot helper */
+  .status-dot {
+    @apply relative inline-flex h-2 w-2 rounded-full;
+  }
+  .status-dot::after {
+    content: "";
+    @apply absolute inset-0 rounded-full animate-pulse-dot;
+    background: currentColor;
+  }
+
+  /* Markdown styling */
+  .prose-msg {
+    @apply min-w-0 text-[13.5px] leading-relaxed text-foreground/90;
+    /* Break long URLs / Chinese-without-spaces so bubbles can shrink. */
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .prose-msg p {
+    @apply my-1.5;
+  }
+  .prose-msg p:first-child {
+    @apply mt-0;
+  }
+  .prose-msg p:last-child {
+    @apply mb-0;
+  }
+  .prose-msg ul,
+  .prose-msg ol {
+    @apply my-2 ml-5 space-y-1;
+  }
+  .prose-msg ul {
+    @apply list-disc;
+  }
+  .prose-msg ol {
+    @apply list-decimal;
+  }
+  .prose-msg code {
+    @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[12px] text-foreground;
+  }
+  .prose-msg pre {
+    @apply my-2.5 max-w-full overflow-x-auto rounded-md border border-border bg-muted/60 p-3 font-mono text-[12.5px] leading-relaxed;
+  }
+  .prose-msg pre code {
+    @apply bg-transparent p-0 text-foreground;
+    word-break: normal;
+    overflow-wrap: normal;
+    white-space: pre;
+  }
+  .prose-msg h1,
+  .prose-msg h2,
+  .prose-msg h3 {
+    @apply mt-3 mb-1.5 font-semibold;
+  }
+  .prose-msg h1 {
+    @apply text-base;
+  }
+  .prose-msg h2 {
+    @apply text-[15px];
+  }
+  .prose-msg h3 {
+    @apply text-sm;
+  }
+  .prose-msg blockquote {
+    @apply my-2 border-l-2 border-border pl-3 text-muted-foreground;
+  }
+  .prose-msg a {
+    @apply underline decoration-muted-foreground/40 underline-offset-2 hover:decoration-foreground;
+  }
+  /* agent 返回的图片(markdown ![](url) / 图片链接 / 裸图片 URL)→ 自适应展示 */
+  .prose-msg .msg-img {
+    @apply my-2 block h-auto max-h-[28rem] max-w-full rounded-md border border-border object-contain;
+  }
+  .prose-msg .table-wrap {
+    @apply my-2 max-w-full overflow-x-auto;
+  }
+  .prose-msg table {
+    @apply my-2 w-full border-collapse text-[13px];
+  }
+  .prose-msg th,
+  .prose-msg td {
+    @apply border border-border px-2 py-1 text-left;
+  }
+  .prose-msg th {
+    @apply bg-muted/50 font-medium;
+  }
+
+  /* 文档 / 技能查看器:比聊天气泡更强的层级、对比与留白,便于长文阅读。
+     与 prose-msg 叠加使用(<Markdown className="prose-doc">),只覆盖需要的元素。 */
+  .prose-doc {
+    @apply text-[13.5px] leading-[1.7] text-foreground/85;
+  }
+  .prose-doc > :first-child {
+    @apply mt-0;
+  }
+  .prose-doc h1 {
+    @apply mt-6 mb-3 border-b border-border pb-2 text-[18px] font-bold tracking-tight text-foreground;
+  }
+  .prose-doc h2 {
+    @apply mt-5 mb-2 text-[15.5px] font-semibold text-accent;
+  }
+  .prose-doc h3 {
+    @apply mt-4 mb-1.5 text-[13.5px] font-semibold text-foreground;
+  }
+  .prose-doc p {
+    @apply my-2 text-foreground/85;
+  }
+  .prose-doc ul,
+  .prose-doc ol {
+    @apply my-2.5 ml-5 space-y-1.5;
+  }
+  .prose-doc li {
+    @apply pl-0.5 text-foreground/85 marker:text-accent/70;
+  }
+  .prose-doc strong {
+    @apply font-semibold text-foreground;
+  }
+  .prose-doc a {
+    @apply font-medium text-accent underline decoration-accent/30 underline-offset-2 hover:decoration-accent;
+  }
+  .prose-doc code {
+    @apply rounded bg-accent/10 px-1.5 py-0.5 font-mono text-[12px] font-medium text-accent ring-1 ring-inset ring-accent/15;
+  }
+  /* 能解析到真实文件的行内代码 / markdown 链接 → 可点击查看(DocMarkdown 渲染后打标记) */
+  .prose-doc code.file-ref,
+  .prose-doc a.file-ref {
+    @apply cursor-pointer text-accent underline decoration-dotted decoration-accent/50 underline-offset-2 transition hover:bg-accent/20 hover:decoration-accent hover:ring-accent/40;
+  }
+  .prose-doc code.file-ref::after,
+  .prose-doc a.file-ref::after {
+    content: "↗";
+    @apply ml-0.5 align-baseline text-[9px] opacity-60;
+  }
+  /* 相对链接但找不到对应文件:断掉导航(防 404),灰显不可点 */
+  .prose-doc a.file-ref-missing {
+    @apply cursor-default text-muted-foreground no-underline;
+  }
+  .prose-doc pre {
+    @apply my-3 rounded-lg border border-border bg-foreground/[0.04] p-3.5;
+  }
+  .prose-doc pre code {
+    @apply bg-transparent font-normal text-foreground ring-0;
+  }
+  .prose-doc blockquote {
+    @apply my-3 rounded-r-md border-l-[3px] border-accent/50 bg-muted/40 py-1.5 pr-3 text-foreground/75;
+  }
+  .prose-doc hr {
+    @apply my-4 border-border;
+  }
+  .prose-doc th,
+  .prose-doc td {
+    @apply px-2.5 py-1.5;
+  }
+  .prose-doc th {
+    @apply bg-muted/60 font-semibold text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .gradient-mask-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent);
+    mask-image: linear-gradient(to bottom, black 80%, transparent);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Radix ScrollArea defaults its inner wrapper to `display: table` which lets
+ * wide children push the layout beyond the viewport (horizontal overflow).
+ * For our chat / lists we want vertical scrolling only — long messages must
+ * wrap. Override to plain block so width is constrained to the viewport.
+ *
+ * 例外:`<ScrollArea horizontal>`(宽表格)**要的就是**横向溢出 —— 那种 Root 带
+ * `data-hscroll`,这里必须放它过去,否则表格被压回容器宽、横滚滚不出东西。
+ * ------------------------------------------------------------------------- */
+[data-radix-scroll-area-viewport] > div {
+  display: block !important;
+  min-width: 0 !important;
+}
+
+/* 直接子代(不是后代):避免横滚 ScrollArea 内再嵌普通 ScrollArea 时误放行内层。
+   min-width 必须回到 Radix 默认的 100% —— 写 auto 会让内层收缩到内容宽,
+   宽屏上表格/空态就不再铺满页宽(横滚能力不受影响:内容更宽时照样溢出可滚)。 */
+[data-hscroll] > [data-radix-scroll-area-viewport] > div {
+  display: table !important;
+  min-width: 100% !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

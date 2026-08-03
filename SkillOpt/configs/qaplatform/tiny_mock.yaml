@@ -1,0 +1,37 @@
+_base_: ../_base_/default.yaml
+
+env:
+  name: qaplatform
+  mock: true
+  skill_init: skillopt/envs/qaplatform/skills/initial.md
+  split_mode: split_dir
+  split_dir: skillopt/envs/qaplatform/cases
+  workers: 1
+  limit: 0
+
+train:
+  num_epochs: 1
+  batch_size: 3
+  accumulation: 1
+  seed: 42
+
+gradient:
+  minibatch_size: 1
+  merge_batch_size: 2
+  analyst_workers: 1
+  max_analyst_rounds: 1
+
+optimizer:
+  learning_rate: 1
+  min_learning_rate: 1
+  lr_scheduler: constant
+  skill_update_mode: patch
+  use_slow_update: false
+  use_meta_skill: false
+
+evaluation:
+  use_gate: true
+  sel_env_num: 2
+  test_env_num: 2
+  eval_test: true
+  test_passk: 3         # 留出集每题跑 K 次,严格 pass^k=保下限(K=1 即旧单次行为)
