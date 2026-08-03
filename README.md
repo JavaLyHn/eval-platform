@@ -27,6 +27,18 @@
 
 ---
 
+## 界面预览
+
+> 以下截图取自**真实运行**的脱敏 demo(虚构员工 Aria / Sam / Dex,数据均为演示用)。
+
+![评测中心与题库](docs/screenshots/01-overview.jpg)
+
+![数据看板与评测报告](docs/screenshots/02-dashboard-report.jpg)
+
+![配置面板 · 标准员工 / Agent 管理 / LLM 模型](docs/screenshots/03-config.jpg)
+
+---
+
 ## 解决什么问题
 
 「清单上写的能力 ✅」和「实测表现」之间往往有落差 —— AI Agent 尤其如此(非确定性、边界失守、红线越界)。
