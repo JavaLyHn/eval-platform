@@ -37,6 +37,8 @@
 
 ![配置面板 · 标准员工 / Agent 管理 / LLM 模型](docs/screenshots/03-config.jpg)
 
+![Skill 评测 · SkillOpt 优化闭环参数](docs/screenshots/04-skillopt.jpg)
+
 ---
 
 ## 解决什么问题
